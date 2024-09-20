@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardar en Excel</title>
+</head>
+<body>
+
+    <h1>Formulario de Preguntas</h1>
+
+    <!-- Pregunta 1 -->
+    <div id="pregunta1">
+        <p>¿Cuál es tu color favorito?</p>
+        <label><input type="radio" name="color" value="Rojo"> Rojo</label><br>
+        <label><input type="radio" name="color" value="Azul"> Azul</label><br>
+        <label><input type="radio" name="color" value="Verde"> Verde</label><br>
+        <label><input type="radio" name="color" value="Amarillo"> Amarillo</label>
+    </div>
+
+    <!-- Botón Siguiente -->
+    <button id="siguiente" onclick="guardarEnExcel()">Siguiente</button>
+
+    <script>
+        function guardarEnExcel() {
+            // Recoger la respuesta seleccionada
+            const colorSeleccionado = document.querySelector('input[name="color"]:checked');
+
+            if (colorSeleccionado) {
+                const data = { color: colorSeleccionado.value };
+
+                // Enviar la información al servidor
+                fetch('http://localhost:3000/guardar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(result => {
+                    alert(result.message);
+                })
+                .catch(error => {
+                    console.error('Error al guardar en Excel:', error);
+                });
+            } else {
+                alert('Por favor, selecciona un color.');
+            }
+        }
+    </script>
+
+</body>
+</html>
